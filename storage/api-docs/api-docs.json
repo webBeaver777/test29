@@ -1,0 +1,957 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API для управления автомобилями",
+        "description": "Документация API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/",
+            "description": "Local server"
+        }
+    ],
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Регистрация пользователя",
+                "operationId": "8e4e3cb7b46126f4696379d3c7eeb4ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Пользователь создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Логин пользователя",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Успешный логин",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "type": "object"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Неверные данные"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Выход пользователя",
+                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "responses": {
+                    "200": {
+                        "description": "Токен удален",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Токен удален, вы вышли из системы."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/brands": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Список брендов",
+                "operationId": "130f2bd423b6fe2355253e2c39878d99",
+                "responses": {
+                    "200": {
+                        "description": "Список брендов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/BrandModel"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Создать бренд",
+                "operationId": "283de011874bd2a1ada6efafb676e83f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Toyota"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Бренд создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/BrandModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/brands/{brand}": {
+            "get": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Показать бренд",
+                "operationId": "3d96df73cdcb756852b6818c2ab3cfd1",
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "ID бренда",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные бренда",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/BrandModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Удалить бренд",
+                "operationId": "6f697728ec03b01b5b1dbe50e023688c",
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "ID бренда",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Бренд удален"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Brands"
+                ],
+                "summary": "Обновить бренд",
+                "operationId": "50f687bcaa086465b06adf644ecdcac7",
+                "parameters": [
+                    {
+                        "name": "brand",
+                        "in": "path",
+                        "description": "ID бренда",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Toyota"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Бренд обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/BrandModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/cars": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Список автомобилей пользователя",
+                "operationId": "4e913ee0b6125f5ad41f32df1df5b8a4",
+                "responses": {
+                    "200": {
+                        "description": "Список автомобилей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CarModel"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Создать автомобиль",
+                "operationId": "fbbced9da0be8a33be9dfad182f803bb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "car_model_id",
+                                    "brand_id",
+                                    "year",
+                                    "color",
+                                    "mileage"
+                                ],
+                                "properties": {
+                                    "car_model_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "brand_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "year": {
+                                        "type": "integer",
+                                        "example": 2020
+                                    },
+                                    "mileage": {
+                                        "type": "integer",
+                                        "example": 15000
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "red"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Автомобиль создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CarModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/cars/{car}": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Показать автомобиль",
+                "operationId": "91fb8ee0e3137745bcabf3a8bd78c386",
+                "parameters": [
+                    {
+                        "name": "car",
+                        "in": "path",
+                        "description": "ID автомобиля",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные автомобиля",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CarModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Удалить автомобиль",
+                "operationId": "0fc1699e0e5ba207ce31b7e1dda1ba9f",
+                "parameters": [
+                    {
+                        "name": "car",
+                        "in": "path",
+                        "description": "ID автомобиля",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Автомобиль удален"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Обновить автомобиль",
+                "operationId": "0bd03358c1fc2590b669e2f077888246",
+                "parameters": [
+                    {
+                        "name": "car",
+                        "in": "path",
+                        "description": "ID автомобиля",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "car_model_id",
+                                    "brand_id",
+                                    "year",
+                                    "color",
+                                    "mileage"
+                                ],
+                                "properties": {
+                                    "car_model_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "brand_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "year": {
+                                        "type": "integer",
+                                        "example": 2020
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "red"
+                                    },
+                                    "mileage": {
+                                        "type": "integer",
+                                        "example": 15000
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Автомобиль обновлен",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CarModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/car-models": {
+            "get": {
+                "tags": [
+                    "Car Models"
+                ],
+                "summary": "Список моделей автомобилей",
+                "operationId": "e3b490883632ae064d1de5ddac65cc7e",
+                "responses": {
+                    "200": {
+                        "description": "Список моделей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CarModelModel"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Car Models"
+                ],
+                "summary": "Создать модель автомобиля",
+                "operationId": "3484efe17cc38d2cbf85e61aaaee781a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "brand_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Camry"
+                                    },
+                                    "brand_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Модель создана",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CarModelModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/car-models/{id}": {
+            "get": {
+                "tags": [
+                    "Car Models"
+                ],
+                "summary": "Показать модель автомобиля",
+                "operationId": "64a838d8b35a648d96ece48c74a9d740",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID модели",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные модели",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CarModelModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Car Models"
+                ],
+                "summary": "Удалить модель автомобиля",
+                "operationId": "891983dc0d18b7d798f7ca2459643ab8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID модели",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Модель удалена"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Car Models"
+                ],
+                "summary": "Обновить модель автомобиля",
+                "operationId": "1f44fdf2b27dec69bb9913a394875b65",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID модели",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "brand_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Camry"
+                                    },
+                                    "brand_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Модель обновлена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CarModelModel"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BrandModel": {
+                "title": "Brand",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Lada"
+                    }
+                },
+                "type": "object"
+            },
+            "CarModel": {
+                "title": "Car",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "brand_id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "year": {
+                        "type": "integer",
+                        "example": 2025
+                    },
+                    "mileage": {
+                        "type": "integer",
+                        "example": 20000
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "black"
+                    }
+                },
+                "type": "object"
+            },
+            "CarModelModel": {
+                "title": "Car Model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "brand_id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Vesta"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "Бренд обновлен",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "properties": {
+                                "data": {
+                                    "$ref": "#/components/schemas/BrandModel"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Авторизация и регистрация пользователей"
+        },
+        {
+            "name": "Brands",
+            "description": "Методы управления брендами автомобилей"
+        },
+        {
+            "name": "Cars",
+            "description": "Методы управления автомобилями"
+        },
+        {
+            "name": "Car Models",
+            "description": "Методы управления моделями автомобилей"
+        }
+    ]
+}
