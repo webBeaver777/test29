@@ -16,7 +16,7 @@ class CarModelControllerTest extends TestCase
     {
         $carModels = [
             new CarModel(['id' => 1, 'name' => 'Model S', 'brand_id' => 1]),
-            new CarModel(['id' => 2, 'name' => 'Model X', 'brand_id' => 1])
+            new CarModel(['id' => 2, 'name' => 'Model X', 'brand_id' => 1]),
         ];
         foreach ($carModels as $carModel) {
             $carModel->setRelation('brand', new \App\Models\Brand(['id' => 1, 'name' => 'TestBrand']));

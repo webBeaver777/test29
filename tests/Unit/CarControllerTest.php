@@ -4,9 +4,9 @@ namespace Tests\Unit;
 
 use App\Http\Controllers\Api\CarController;
 use App\Http\Requests\CarRequest;
+use App\Models\Brand;
 use App\Models\Car;
 use App\Models\CarModel;
-use App\Models\Brand;
 use App\Models\User;
 use App\Services\CarService;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ class CarControllerTest extends TestCase
 
         $cars = [
             new Car(['id' => 1, 'car_model_id' => 1, 'brand_id' => 2, 'year' => 2020, 'color' => 'red', 'mileage' => 15000]),
-            new Car(['id' => 2, 'car_model_id' => 1, 'brand_id' => 2, 'year' => 2021, 'color' => 'blue', 'mileage' => 10000])
+            new Car(['id' => 2, 'car_model_id' => 1, 'brand_id' => 2, 'year' => 2021, 'color' => 'blue', 'mileage' => 10000]),
         ];
         foreach ($cars as $car) {
             $car->setRelation('carModel', $carModel);

@@ -16,7 +16,7 @@ class BrandControllerTest extends TestCase
     {
         $brands = [
             new Brand(['id' => 1, 'name' => 'TestBrand1']),
-            new Brand(['id' => 2, 'name' => 'TestBrand2'])
+            new Brand(['id' => 2, 'name' => 'TestBrand2']),
         ];
         $service = Mockery::mock(BrandService::class);
         $service->shouldReceive('list')->once()->andReturn($brands);
