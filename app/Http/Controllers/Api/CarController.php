@@ -7,6 +7,7 @@ use App\Http\Requests\CarRequest;
 use App\Http\Resources\CarResource;
 use App\Models\Car;
 use App\Services\CarService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
@@ -118,6 +119,7 @@ class CarController extends Controller
      *         )
      *     )
      * )
+     * @throws AuthorizationException
      */
     public function show(Car $car): JsonResponse
     {
@@ -166,6 +168,7 @@ class CarController extends Controller
      *         )
      *     )
      * )
+     * @throws AuthorizationException
      */
     public function update(CarRequest $request, Car $car): JsonResponse
     {
@@ -196,6 +199,7 @@ class CarController extends Controller
      *         description="Автомобиль удален"
      *     )
      * )
+     * @throws AuthorizationException
      */
     public function destroy(Car $car): JsonResponse
     {
